@@ -70,12 +70,13 @@ export function handlePaycBidWithdrawn(event: PaycBidWithdrawn): void {
 export function handlePaycBought(event: PaycBought): void {
   let id = event.params.paycIndex.toHex();
   let ape = PhunkyApe.load(id);
-  let bid = Bid.load(id)
+  let bidId = event.params.paycIndex.toString();
+  let bid = Bid.load(bidId)
 
   // Check for the case where there is a bid from the new owner and refund it.
   // Any other bid can stay in place.
   if (bid !== null && bid.from == event.params.toAddress) {
-    store.remove("Bid", id)
+    store.remove("Bid", bidId)
   }
   if (ape == null) {
     ape = new PhunkyApe(id);
